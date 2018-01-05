@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertGreaterThan;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
@@ -16,6 +17,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
@@ -35,6 +37,7 @@ public class AssertionTest {
 //  }
 
     private static final String ASSERTION_ERROR_EXPECTED = "AssertionError expected";
+    private Object o;
 
     @Test(expected = AssertionError.class)
     public void fails() {
@@ -974,4 +977,44 @@ public class AssertionTest {
             }
         };
     }
+    
+    @Test
+    public void greaterThan() {
+        
+        Integer o1  = 2;
+        Integer o2  = 1;
+        
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+
+            public int compare(Integer o1, Integer o2) {
+                if(o1 > o2) {
+                    return 1;
+                } else return 0;
+            }          
+        };
+        assertGreaterThan(o1, o2, comparator);
+    }
+    
+    @Test
+    public void greaterThanFailNotGreater() {
+        
+        Integer o1  = 1;
+        Integer o2  = 1;
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+            
+            public int compare(Integer o1, Integer o2) {
+                if(o1 > o2) {
+                    return 1;
+                } else return 0;
+            }          
+        };
+        try {
+            assertGreaterThan(o1,o2,comparator);
+        } catch(AssertionError a) {
+            assertEquals(a.getMessage(),"Not greater");
+        }
+    }
+    
+    
+
 }

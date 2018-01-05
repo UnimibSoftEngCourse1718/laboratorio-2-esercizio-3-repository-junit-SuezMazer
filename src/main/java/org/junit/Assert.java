@@ -32,11 +32,10 @@ public class Assert {
     }
 
     public static <T> void assertGreaterThan(T o1, T o2, java.util.Comparator<T> comparator) {
-        if( !(o1 instanceof Comparator) || !(o2 instanceof Comparator)) {
-            fail();             
-        }else if (comparator.compare(o1, o2) > 0) {
+        
+        if (comparator.compare(o1, o2) > 0) {
             return;
-        }
+        } else fail("Not greater");
     }
 
     /**
