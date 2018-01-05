@@ -28,6 +28,12 @@ public class Assert {
      */
     protected Assert() {
     }
+    
+    public static void assertGreaterThan(int i1, int i2){
+        if(i1 > i2) {
+            return;
+        }else fail("Not greater!");
+    }
 
     /**
      * Asserts that a condition is true. If it isn't it throws an
