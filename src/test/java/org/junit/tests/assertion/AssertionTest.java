@@ -17,6 +17,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
@@ -36,6 +37,7 @@ public class AssertionTest {
 //  }
 
     private static final String ASSERTION_ERROR_EXPECTED = "AssertionError expected";
+    private Object o;
 
     @Test(expected = AssertionError.class)
     public void fails() {
@@ -977,6 +979,7 @@ public class AssertionTest {
     }
     
     @Test
+
     public void greater() {
         Object o = new Object();
         assertGreaterThan(2, 1);
@@ -989,6 +992,43 @@ public class AssertionTest {
 //        assertEquals(1l, 1l);
 //        assertEquals(1.0, 1.0, 0.0);
 //        assertEquals(1.0d, 1.0d, 0.0d);
+    }
+    
+
+    public void greaterThan() {
+        
+        Integer o1  = 2;
+        Integer o2  = 1;
+        
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+
+            public int compare(Integer o1, Integer o2) {
+                if(o1 > o2) {
+                    return 1;
+                } else return 0;
+            }          
+        };
+        assertGreaterThan(o1, o2, comparator);
+    }
+    
+    @Test
+    public void greaterThanFailNotGreater() {
+        
+        Integer o1  = 1;
+        Integer o2  = 1;
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+            
+            public int compare(Integer o1, Integer o2) {
+                if(o1 > o2) {
+                    return 1;
+                } else return 0;
+            }          
+        };
+        try {
+            assertGreaterThan(o1,o2,comparator);
+        } catch(AssertionError a) {
+            assertEquals(a.getMessage(),"Not greater");
+        }
     }
     
 }
